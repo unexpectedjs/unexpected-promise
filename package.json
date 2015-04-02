@@ -1,0 +1,43 @@
+{
+  "name": "unexpected-promise",
+  "version": "1.0.0",
+  "description": "Plugin for the Unexpected assertion lib adding Promise support",
+  "main": "lib/unexpectedPromise.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "lint": "jshint .",
+    "test": "mocha && npm run lint",
+    "travis": "npm test && npm run coverage && <coverage/lcov.info coveralls",
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/unexpectedjs/unexpected-promise.git"
+  },
+  "keywords": [
+    "unexpected",
+    "test",
+    "assertion",
+    "promise",
+    "async"
+  ],
+  "author": "Andreas Lind <andreas@one.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/unexpectedjs/unexpected-promise/issues"
+  },
+  "homepage": "https://github.com/unexpectedjs/unexpected-promise",
+  "peerDependencies": {
+    "unexpected": "7"
+  },
+  "devDependencies": {
+    "bluebird": "2.9.24",
+    "coveralls": "2.11.2",
+    "istanbul": "0.3.13",
+    "jshint": "2.6.3",
+    "mocha": "2.2.1",
+    "unexpected": "7.0.0"
+  }
+}
