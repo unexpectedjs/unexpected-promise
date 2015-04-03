@@ -172,5 +172,18 @@ describe('unexpected-promise', function () {
                     "}"
             );
         });
+
+        it('should fail if the promise is fulfilled', function () {
+            return expect(
+                expect(new Promise(function (resolve, reject) {
+                    setImmediate(function () {
+                        resolve('happy times');
+                    });
+                }), 'when rejected', 'to equal', new Error('unhappy times')),
+                'when rejected',
+                'to have message',
+                'Promise unexpectedly fulfilled'
+            );
+        });
     });
 });
