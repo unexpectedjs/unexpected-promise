@@ -7,6 +7,7 @@ describe('unexpected-promise', function () {
     var expect = unexpected.clone().installPlugin(unexpectedPromise);
 
     expect.addAssertion('Error', 'to have message', function (expect, subject, value) {
+        this.errorMode = 'nested';
         expect(subject._isUnexpected ? subject.output.toString() : subject.message, 'to equal', value);
     });
 
@@ -51,13 +52,14 @@ describe('unexpected-promise', function () {
                     'when rejected',
                     'to have message',
                         "expected Promise to be resolved with { baz: 'qux' }\n" +
+                        "  expected { foo: 'bar', baz: 'quux' } to satisfy { baz: 'qux' }\n" +
                         "\n" +
-                        "{\n" +
-                        "  foo: 'bar',\n" +
-                        "  baz: 'quux' // should equal 'qux'\n" +
-                        "              // -quux\n" +
-                        "              // +qux\n" +
-                        "}"
+                        "  {\n" +
+                        "    foo: 'bar',\n" +
+                        "    baz: 'quux' // should equal 'qux'\n" +
+                        "                // -quux\n" +
+                        "                // +qux\n" +
+                        "  }"
 
                 );
             });
@@ -77,12 +79,27 @@ describe('unexpected-promise', function () {
             it('should fail if the promise is fulfilled', function () {
                 return expect(
                     expect(new Promise(function (resolve, reject) {
+                        setImmediate(resolve);
+                    }), 'to be rejected'),
+                    'when rejected',
+                    'to have message',
+                        'expected Promise to be rejected\n' +
+                        '  Promise unexpectedly fulfilled'
+                );
+            });
+
+            it('should fail if the promise is fulfilled with a value', function () {
+                return expect(
+                    expect(new Promise(function (resolve, reject) {
                         setImmediate(function () {
                             resolve('happy times');
                         });
                     }), 'to be rejected'),
-                    'to be rejected with',
-                    'Promise unexpectedly fulfilled');
+                    'when rejected',
+                    'to have message',
+                        "expected Promise to be rejected\n" +
+                        "  Promise unexpectedly fulfilled with 'happy times'"
+                );
             });
         });
 
@@ -105,12 +122,13 @@ describe('unexpected-promise', function () {
                     'when rejected',
                     'to have message',
                         "expected Promise to be rejected with Error({ message: 'foobar' })\n" +
+                        "  expected Error({ message: 'OMG!' }) to satisfy Error({ message: 'foobar' })\n" +
                         "\n" +
-                        "Error({\n" +
-                        "  message: 'OMG!' // should equal 'foobar'\n" +
-                        "                  // -OMG!\n" +
-                        "                  // +foobar\n" +
-                        "})"
+                        "  Error({\n" +
+                        "    message: 'OMG!' // should equal 'foobar'\n" +
+                        "                    // -OMG!\n" +
+                        "                    // +foobar\n" +
+                        "  })"
                 );
             });
         });
@@ -135,12 +153,13 @@ describe('unexpected-promise', function () {
                 'when rejected',
                 'to have message',
                     "expected Promise when resolved to satisfy { foo: 'baz' }\n" +
+                    "  expected { foo: 'bar' } to satisfy { foo: 'baz' }\n" +
                     "\n" +
-                    "{\n" +
-                    "  foo: 'bar' // should equal 'baz'\n" +
-                    "             // -bar\n" +
-                    "             // +baz\n" +
-                    "}"
+                    "  {\n" +
+                    "    foo: 'bar' // should equal 'baz'\n" +
+                    "               // -bar\n" +
+                    "               // +baz\n" +
+                    "  }"
             );
         });
     });
@@ -164,16 +183,29 @@ describe('unexpected-promise', function () {
                 'when rejected',
                 'to have message',
                     "expected Promise when rejected to satisfy { foo: 'baz' }\n" +
+                    "  expected { foo: 'bar' } to satisfy { foo: 'baz' }\n" +
                     "\n" +
-                    "{\n" +
-                    "  foo: 'bar' // should equal 'baz'\n" +
-                    "             // -bar\n" +
-                    "             // +baz\n" +
-                    "}"
+                    "  {\n" +
+                    "    foo: 'bar' // should equal 'baz'\n" +
+                    "               // -bar\n" +
+                    "               // +baz\n" +
+                    "  }"
             );
         });
 
         it('should fail if the promise is fulfilled', function () {
+            return expect(
+                expect(new Promise(function (resolve, reject) {
+                    setImmediate(resolve);
+                }), 'when rejected', 'to equal', new Error('unhappy times')),
+                'when rejected',
+                'to have message',
+                    "expected Promise when rejected 'to equal', Error({ message: 'unhappy times' })\n" +
+                    "  Promise unexpectedly fulfilled"
+            );
+        });
+
+        it('should fail if the promise is fulfilled with a value', function () {
             return expect(
                 expect(new Promise(function (resolve, reject) {
                     setImmediate(function () {
@@ -182,7 +214,8 @@ describe('unexpected-promise', function () {
                 }), 'when rejected', 'to equal', new Error('unhappy times')),
                 'when rejected',
                 'to have message',
-                'Promise unexpectedly fulfilled'
+                    "expected Promise when rejected 'to equal', Error({ message: 'unhappy times' })\n" +
+                    "  Promise unexpectedly fulfilled with 'happy times'"
             );
         });
     });
