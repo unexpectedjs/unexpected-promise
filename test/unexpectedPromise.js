@@ -6,11 +6,6 @@ var unexpected = require('unexpected'),
 describe('unexpected-promise', function () {
     var expect = unexpected.clone().installPlugin(unexpectedPromise);
 
-    expect.addAssertion('Error', 'to have message', function (expect, subject, value) {
-        this.errorMode = 'nested';
-        expect(subject._isUnexpected ? subject.output.toString() : subject.message, 'to equal', value);
-    });
-
     describe('"to be resolved" assertion', function () {
         describe('with no additional argument', function () {
             it('should succeed if the response is resolved with any value', function () {
