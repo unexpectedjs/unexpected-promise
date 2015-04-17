@@ -4,7 +4,7 @@ unexpected-promise
 Plugin for the Unexpected assertion lib adding Promise support. Requires Unexpected 7 or above.
 
 [![NPM version](https://badge.fury.io/js/unexpected-promise.png)](http://badge.fury.io/js/unexpected-promise)
-[![Build Status](https://travis-ci.org/unexpectedjs/unexpected-promise.png)](https://travis-ci.org/unexpectedjs/unexpected-promise)
+[![Build Status](https://travis-ci.org/unexpectedjs/unexpected-promise.png?branch=master)](https://travis-ci.org/unexpectedjs/unexpected-promise)
 [![Coverage Status](https://coveralls.io/repos/unexpectedjs/unexpected-promise/badge.png)](https://coveralls.io/r/unexpectedjs/unexpected-promise)
 [![Dependency Status](https://david-dm.org/unexpectedjs/unexpected-promise.png)](https://david-dm.org/unexpectedjs/unexpected-promise)
 
