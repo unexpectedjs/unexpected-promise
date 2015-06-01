@@ -116,8 +116,8 @@ describe('unexpected-promise', function () {
                     }), 'to be rejected with', new Error('foobar')),
                     'when rejected',
                     'to have message',
-                        "expected Promise to be rejected with Error({ message: 'foobar' })\n" +
-                        "  expected Error({ message: 'OMG!' }) to satisfy Error({ message: 'foobar' })\n" +
+                        "expected Promise to be rejected with Error('foobar')\n" +
+                        "  expected Error('OMG!') to satisfy Error('foobar')\n" +
                         "\n" +
                         "  Error({\n" +
                         "    message: 'OMG!' // should equal 'foobar'\n" +
@@ -195,7 +195,7 @@ describe('unexpected-promise', function () {
                 }), 'when rejected', 'to equal', new Error('unhappy times')),
                 'when rejected',
                 'to have message',
-                    "expected Promise when rejected 'to equal', Error({ message: 'unhappy times' })\n" +
+                    "expected Promise when rejected 'to equal', Error('unhappy times')\n" +
                     "  Promise unexpectedly fulfilled"
             );
         });
@@ -209,7 +209,7 @@ describe('unexpected-promise', function () {
                 }), 'when rejected', 'to equal', new Error('unhappy times')),
                 'when rejected',
                 'to have message',
-                    "expected Promise when rejected 'to equal', Error({ message: 'unhappy times' })\n" +
+                    "expected Promise when rejected 'to equal', Error('unhappy times')\n" +
                     "  Promise unexpectedly fulfilled with 'happy times'"
             );
         });

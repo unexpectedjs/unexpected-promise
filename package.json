@@ -38,6 +38,6 @@
     "istanbul": "0.3.13",
     "jshint": "2.6.3",
     "mocha": "2.2.1",
-    "unexpected": "7.0.0"
+    "unexpected": "7.5.0"
   }
 }
