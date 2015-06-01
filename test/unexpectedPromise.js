@@ -1,7 +1,7 @@
 /*global describe, it, setImmediate*/
 var unexpected = require('unexpected'),
     unexpectedPromise = require('../lib/unexpectedPromise'),
-    Promise = require('bluebird');
+    Promise = require('avow');
 
 describe('unexpected-promise', function () {
     var expect = unexpected.clone().installPlugin(unexpectedPromise);
