@@ -8,6 +8,8 @@ Plugin for the Unexpected assertion lib adding Promise support. Requires Unexpec
 [![Coverage Status](https://coveralls.io/repos/unexpectedjs/unexpected-promise/badge.svg)](https://coveralls.io/r/unexpectedjs/unexpected-promise)
 [![Dependency Status](https://david-dm.org/unexpectedjs/unexpected-promise.svg)](https://david-dm.org/unexpectedjs/unexpected-promise)
 
+![An unexpected promise](logoImage.jpg)
+
 ```js
 var expect = require('unexpected').installPlugin(require('unexpected-promise'));
 
