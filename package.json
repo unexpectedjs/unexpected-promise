@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/unexpectedjs/unexpected-promise",
   "peerDependencies": {
-    "unexpected": "7"
+    "unexpected": "7 || 8"
   },
   "devDependencies": {
     "avow": "2.0.2",
