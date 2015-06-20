@@ -222,7 +222,7 @@ describe('unexpected-promise', function () {
     describe('with a Bluebird promise (that supports synchronous inspection', function () {
         it('should inspect a pending promise', function () {
             var promise = expect.promise(function (run) {
-                setTimeout(run(function () {}), 0);
+                setImmediate(run(function () {}));
             });
             expect(promise, 'to inspect as', 'Promise (pending)');
             return promise;
@@ -240,7 +240,7 @@ describe('unexpected-promise', function () {
         it('should inspect a fulfilled promise with a value', function () {
             var promise = expect.promise(function (resolve, reject) {
                 resolve(123);
-            })
+            });
 
             return promise.then(function () {
                 expect(promise, 'to inspect as', 'Promise (fulfilled) => 123');
@@ -259,9 +259,9 @@ describe('unexpected-promise', function () {
 
         it('should inspect a rejected promise with a value', function () {
             var promise = expect.promise(function (resolve, reject) {
-                setTimeout(function () {
+                setImmediate(function () {
                     reject(new Error('argh'));
-                }, 0);
+                });
             });
 
             return promise.caught(function () {
