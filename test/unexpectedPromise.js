@@ -6,6 +6,10 @@ var unexpected = require('unexpected'),
 describe('unexpected-promise', function () {
     var expect = unexpected.clone().installPlugin(unexpectedPromise);
 
+    expect.addAssertion('to inspect as', function (expect, subject, value) {
+        expect(expect.inspect(subject).toString(), 'to equal', value);
+    });
+
     describe('"to be resolved" assertion', function () {
         describe('with no additional argument', function () {
             it('should succeed if the response is resolved with any value', function () {
@@ -212,6 +216,57 @@ describe('unexpected-promise', function () {
                     "expected Promise when rejected 'to equal', Error('unhappy times')\n" +
                     "  Promise unexpectedly fulfilled with 'happy times'"
             );
+        });
+    });
+
+    describe('with a Bluebird promise (that supports synchronous inspection', function () {
+        it('should inspect a pending promise', function () {
+            var promise = expect.promise(function (run) {
+                setTimeout(run(function () {}), 0);
+            });
+            expect(promise, 'to inspect as', 'Promise (pending)');
+            return promise;
+        });
+
+        it('should inspect a fulfilled promise without a value', function () {
+            var promise = expect.promise(function () {});
+
+            promise.then(function () {
+                expect(promise, 'to inspect as', 'Promise (fulfilled)');
+            });
+            return promise;
+        });
+
+        it('should inspect a fulfilled promise with a value', function () {
+            var promise = expect.promise(function (resolve, reject) {
+                resolve(123);
+            })
+
+            return promise.then(function () {
+                expect(promise, 'to inspect as', 'Promise (fulfilled) => 123');
+            });
+        });
+
+        it('should inspect a rejected promise without a value', function () {
+            var promise = expect.promise(function (resolve, reject) {
+                reject();
+            });
+
+            return promise.caught(function () {
+                expect(promise, 'to inspect as', 'Promise (rejected)');
+            });
+        });
+
+        it('should inspect a rejected promise with a value', function () {
+            var promise = expect.promise(function (resolve, reject) {
+                setTimeout(function () {
+                    reject(new Error('argh'));
+                }, 0);
+            });
+
+            return promise.caught(function () {
+                expect(promise, 'to inspect as', "Promise (rejected) => Error('argh')");
+            });
         });
     });
 });
