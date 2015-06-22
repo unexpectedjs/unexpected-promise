@@ -219,6 +219,56 @@ describe('unexpected-promise', function () {
         });
     });
 
+    it('should inspect a pending promise', function () {
+        var promise = new Promise(function (resolve, reject) {
+            setImmediate(resolve);
+        });
+        expect(promise, 'to inspect as', 'Promise');
+        return promise;
+    });
+
+    it('should inspect a fulfilled promise without a value', function () {
+        var promise = new Promise(function (resolve, reject) {
+            resolve();
+        });
+
+        return promise.then(function () {
+            expect(promise, 'to inspect as', 'Promise');
+        });
+    });
+
+    it('should inspect a fulfilled promise with a value', function () {
+        var promise = new Promise(function (resolve, reject) {
+            resolve(123);
+        });
+
+        return promise.then(function () {
+            expect(promise, 'to inspect as', 'Promise');
+        });
+    });
+
+    it('should inspect a rejected promise without a value', function () {
+        var promise = new Promise(function (resolve, reject) {
+            reject();
+        });
+
+        return promise.then(undefined, function () {
+            expect(promise, 'to inspect as', 'Promise');
+        });
+    });
+
+    it('should inspect a rejected promise with a value', function () {
+        var promise = new Promise(function (resolve, reject) {
+            setImmediate(function () {
+                reject(new Error('argh'));
+            });
+        });
+
+        return promise.then(undefined, function () {
+            expect(promise, 'to inspect as', 'Promise');
+        });
+    });
+
     describe('with a Bluebird promise (that supports synchronous inspection', function () {
         it('should inspect a pending promise', function () {
             var promise = expect.promise(function (run) {
@@ -231,10 +281,17 @@ describe('unexpected-promise', function () {
         it('should inspect a fulfilled promise without a value', function () {
             var promise = expect.promise(function () {});
 
-            promise.then(function () {
+            return promise.then(function () {
                 expect(promise, 'to inspect as', 'Promise (fulfilled)');
             });
-            return promise;
+        });
+
+        it('should inspect a fulfilled promise without a value method', function () {
+            var promise = expect.promise(function () {});
+            promise.value = null;
+            return promise.then(function () {
+                expect(promise, 'to inspect as', 'Promise (fulfilled)');
+            });
         });
 
         it('should inspect a fulfilled promise with a value', function () {
